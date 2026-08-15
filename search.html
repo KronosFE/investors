@@ -488,7 +488,7 @@ f();window.addEventListener('scroll',f,{passive:true});})();
 <script>
 const REPOS=["ai", "hyperion", "aegis", "metrovolt", "defense", "ehs", "mission", "leadership", "technical", "whitepapers", "publications", "investors", "press"]; let DATA=[];
 const LBL={ai:'AI Architecture',hyperion:'Hyperion',aegis:'Aegis',metrovolt:'MetroVolt',defense:'Defense',ehs:'EHS',mission:'Mission',leadership:'Leadership',technical:'Technical Library',whitepapers:'Whitepapers',publications:'Publications',investors:'Investors',press:'Newsroom'};
-Promise.all(REPOS.map(r=>fetch('/'+r+'/search-index.json').then(x=>x.json()).then(a=>a.map(o=>({...o,r})).catch(()=>[])).catch(()=>[]))).then(all=>{DATA=all.flat();document.getElementById('meta').textContent=DATA.length+' pages indexed';run();});
+Promise.all(REPOS.map(r=>fetch('/'+r+'/search-index.json').then(x=>x.json()).then(a=>a.map(o=>({...o,r}))).catch(()=>[]))).then(all=>{DATA=all.flat();document.getElementById('meta').textContent=DATA.length+' pages indexed';run();});
 const q=document.getElementById('q'),out=document.getElementById('out'),meta=document.getElementById('meta');
 function esc(s){return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
 function run(){const v=q.value.trim().toLowerCase();if(!v){out.innerHTML='';return;}
