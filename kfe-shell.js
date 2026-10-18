@@ -2,15 +2,17 @@
    Include on any page:  <link rel="stylesheet" href="kfe-shell.css"><script src="kfe-shell.js" defer></script>
    Idempotent: skips injection if a .kfe-header / .kfe-footer already exists. Root-absolute links. */
 (function(){
+  setTimeout(function(){if(document.body)document.body.classList.add('kfe-ready');},2500);
   var LOGO='<svg viewBox="0 0 120 120" role="img" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"><circle cx="60" cy="60" r="50"/><line x1="60" y1="16" x2="60" y2="104"/><path d="M26,60 C44,42 76,42 94,60"/><path d="M26,60 C44,78 76,78 94,60"/></g><circle cx="60" cy="60" r="7.5" fill="#d4ad5c"/></svg>';
   var CARET='<svg class="kfe-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>';
   // Matches the live kronosfusionenergy.com header: 6 items + Kronos Model + Log in.
   // Blueprint lives under Technology; Computing/HPC/Science under Proof (keeps the bar clean).
   var NAV=[
-    {label:'Technology',items:[['/how-it-works','How it works'],['/hyperion','Breeder — Hyperion'],['/aegis','Burner — Aegis'],['/metrovolt','Burner — MetroVolt'],['/ai','AI-Native Architecture'],['/magnets','Magnets'],['/fuel-cycle','Fuel cycle'],['/safety','Safety'],['/roadmap','Roadmap'],['/blueprint','Engineering Blueprint'],['/BOM','Bill of materials'],['/derisking','De-risking &amp; physics']]},
+    {label:'Technology',items:[['/how-it-works','How it works'],['/hyperion','Breeder — Hyperion'],['/aegis','Burner — Aegis'],['/metrovolt','Burner — MetroVolt'],['/ai','AI-Native Architecture'],['/magnets','Magnets'],['/fuel-cycle','Fuel cycle'],['/safety','Safety'],['/roadmap','Roadmap'],['/blueprints','Engineering Blueprint'],['/BOM','Bill of materials'],['/derisking','De-risking &amp; physics']]},
     {label:'Solutions',items:[['/metrovolt','AI & Data Centers'],['/defense','Defense & Government'],['/metrovolt','Grid & Baseload'],['/defense','Neutron Detection'],['/ai','Quantum']]},
     {link:['/learn/','Learn']},
     {link:['/technical/','Technical Library']},
+    {link:['/kodex','Kodex']},
     {label:'Proof',items:[['/publications','Publications'],['/whitepapers','Whitepapers'],['/technical/','Technical Library'],['/mission','Open Science & Reproducibility'],['/science','Science & Evidence'],['/computing','Computing & De-risking'],['/computing/hpc','High-Performance Computing']]},
     {label:'Company',items:[['/mission','About / Mission'],['/leadership','Leadership'],['/ehs','Environment, Health & Safety'],['/investors','Investors'],['/careers','Careers'],['/press','Press'],['/faq','FAQ'],['/contact','Contact']]}
   ];
@@ -47,12 +49,12 @@
       '<p class="kfe-footer-tag">A fusion energy company. Isotopes first, electricity next — building toward first construction in 2027.</p></div>'+
       '<div class="kfe-cols">'+
         col('Technology',[['/hyperion','Breeder — Hyperion'],['/aegis','Burner — Aegis'],['/metrovolt','Burner — MetroVolt'],['/how-it-works','How it works'],['/roadmap','Roadmap']])+
-        col('Blueprint & Computing',[['/blueprint','Blueprint overview'],['/BOM','Bill of materials'],['/derisking','De-risking & physics'],['/blueprints/','Engineering portal 🔒'],['/computing','Computing & de-risking'],['/science','Science & evidence']])+
+        col('Blueprint & Computing',[['/blueprints','Blueprint overview'],['/BOM','Bill of materials'],['/derisking','De-risking & physics'],['/blueprints/','Engineering portal 🔒'],['/computing','Computing & de-risking'],['/science','Science & evidence']])+
         col('Proof',[['/publications','Publications'],['/whitepapers','Whitepapers'],['/technical/','Technical Library'],['/mission','Open science']])+
         col('Company',[['/mission','About / Mission'],['/leadership','Leadership'],['/investors','Investors'],['/careers','Careers'],['/press','Press'],['/faq','FAQ'],['/contact','Contact']])+
       '</div></div>'+
-      '<div class="kfe-footer-legal"><span>© 2026 Kronos Fusion Energy — a fusion energy company.</span>'+
-        '<span class="kfe-legal-links"><a href="/legal/privacy">Privacy</a><a href="/legal/terms">Terms</a><a href="/legal/corrections">Corrections</a><a href="/legal/accessibility">Accessibility</a></span></div>'+
+      '<div class="kfe-footer-legal"><span>© 2026 Kronos Fusion Energy — a fusion energy company.<button class="kfe-cite" type="button" title="Copy a citation for this page">Cite this page</button></span>'+
+        '<span class="kfe-legal-links"><a href="/legal/privacy">Privacy</a><a href="/legal/terms">Terms</a><a href="/legal/legal-notices">Legal notices</a><a href="/legal/accessibility">Accessibility</a></span></div>'+
       '</footer>';
   }
   function wire(root){
@@ -96,25 +98,25 @@
   }
   // per-section footer strips — auto-detected from the URL's first path segment (or window.KFE_SECTION / ?section=)
   var SECTIONS={
-    hyperion:{name:'Hyperion — Breeder',links:[['/hyperion','Overview'],['/how-it-works','How it works'],['/fuel-cycle','Fuel cycle'],['/magnets','Magnets']],faq:'/faq/breeder.html'},
-    aegis:{name:'Aegis — Burner',links:[['/aegis','Overview'],['/defense','Defense & Government'],['/how-it-works','How it works']],faq:'/faq/aegis.html'},
-    metrovolt:{name:'MetroVolt — Burner',links:[['/metrovolt','Overview'],['/how-it-works','How it works']],faq:'/faq/metrovolt.html'},
-    defense:{name:'Defense & Government',links:[['/defense','Overview'],['/aegis','Aegis burner']],faq:'/faq/defense.html'},
-    ai:{name:'AI-Native Architecture',links:[['/ai','Overview'],['/computing','Computing']],faq:'/faq/ai.html'},
-    computing:{name:'Computing & De-risking',links:[['/computing','Overview'],['/science','Science & Evidence']],faq:'/faq/computing.html'},
-    learn:{name:'Learn',links:[['/learn/','Knowledge base'],['/technical/','Technical Library']],faq:'/faq/general.html'},
-    technical:{name:'Technical Library',links:[['/technical/','Library'],['/publications','Publications'],['/whitepapers','Whitepapers']],faq:'/faq/technical.html'},
-    publications:{name:'Publications',links:[['/publications','Publications'],['/technical/','Technical Library']],faq:'/faq/publications.html'},
-    whitepapers:{name:'Whitepapers',links:[['/whitepapers','Whitepapers'],['/publications','Publications']],faq:'/faq/publications.html'},
-    mission:{name:'Mission',links:[['/mission','About'],['/leadership','Leadership']],faq:'/faq/about.html'},
-    investors:{name:'Investors',links:[['/investors','Overview'],['/mission','Mission']],faq:'/faq/investors.html'},
-    careers:{name:'Careers',links:[['/careers','Openings'],['/mission','Mission']],faq:'/faq/careers.html'},
-    ehs:{name:'Environment, Health & Safety',links:[['/ehs','Overview']],faq:'/faq/environment.html'},
-    leadership:{name:'Leadership',links:[['/leadership','Team'],['/mission','Mission']],faq:'/faq/about.html'},
-    press:{name:'Press',links:[['/press','Press'],['/mission','Mission']],faq:'/faq/about.html'},
-    blueprint:{name:'Engineering Blueprint',links:[['/blueprint','Overview'],['/BOM','Bill of materials'],['/derisking','De-risking'],['/blueprints/','Team portal 🔒']],faq:'/faq/blueprint.html'},
-    bom:{name:'Bill of materials',links:[['/BOM','Overview'],['/blueprint','Blueprint'],['/derisking','De-risking']],faq:'/faq/blueprint.html'},
-    derisking:{name:'De-risking & physics',links:[['/derisking','Overview'],['/blueprint','Blueprint'],['/BOM','Bill of materials'],['/science','Science']],faq:'/faq/science.html'},
+    hyperion:{name:'Hyperion — Breeder',links:[['/hyperion','Overview'],['/how-it-works','How it works'],['/fuel-cycle','Fuel cycle'],['/magnets','Magnets']],faq:'/faq/breeder'},
+    aegis:{name:'Aegis — Burner',links:[['/aegis','Overview'],['/defense','Defense & Government'],['/how-it-works','How it works']],faq:'/faq/aegis'},
+    metrovolt:{name:'MetroVolt — Burner',links:[['/metrovolt','Overview'],['/how-it-works','How it works']],faq:'/faq/metrovolt'},
+    defense:{name:'Defense & Government',links:[['/defense','Overview'],['/aegis','Aegis burner']],faq:'/faq/defense'},
+    ai:{name:'AI-Native Architecture',links:[['/ai','Overview'],['/computing','Computing']],faq:'/faq/ai'},
+    computing:{name:'Computing & De-risking',links:[['/computing','Overview'],['/science','Science & Evidence']],faq:'/faq/computing'},
+    learn:{name:'Learn',links:[['/learn/','Knowledge base'],['/technical/','Technical Library']],faq:'/faq/general'},
+    technical:{name:'Technical Library',links:[['/technical/','Library'],['/publications','Publications'],['/whitepapers','Whitepapers']],faq:'/faq/technical'},
+    publications:{name:'Publications',links:[['/publications','Publications'],['/technical/','Technical Library']],faq:'/faq/publications'},
+    whitepapers:{name:'Whitepapers',links:[['/whitepapers','Whitepapers'],['/publications','Publications']],faq:'/faq/publications'},
+    mission:{name:'Mission',links:[['/mission','About'],['/leadership','Leadership']],faq:'/faq/about'},
+    investors:{name:'Investors',links:[['/investors','Overview'],['/mission','Mission']],faq:'/faq/investors'},
+    careers:{name:'Careers',links:[['/careers','Openings'],['/mission','Mission']],faq:'/faq/careers'},
+    ehs:{name:'Environment, Health & Safety',links:[['/ehs','Overview']],faq:'/faq/environment'},
+    leadership:{name:'Leadership',links:[['/leadership','Team'],['/mission','Mission']],faq:'/faq/about'},
+    press:{name:'Press',links:[['/press','Press'],['/mission','Mission']],faq:'/faq/about'},
+    blueprint:{name:'Engineering Blueprint',links:[['/blueprints','Overview'],['/BOM','Bill of materials'],['/derisking','De-risking'],['/blueprints/','Team portal 🔒']],faq:'/faq/blueprints'},
+    bom:{name:'Bill of materials',links:[['/BOM','Overview'],['/blueprints','Blueprint'],['/derisking','De-risking']],faq:'/faq/blueprints'},
+    derisking:{name:'De-risking & physics',links:[['/derisking','Overview'],['/blueprints','Blueprint'],['/BOM','Bill of materials'],['/science','Science']],faq:'/faq/science'},
     faq:{name:'FAQ',links:[['/faq','All questions'],['/mission','About']],faq:'/faq'}
   };
   function currentSection(){
@@ -139,6 +141,16 @@
     var sub=subnav(); if(sub) document.querySelector('.kfe-header').insertAdjacentHTML('afterend', sub);
     document.body.insertAdjacentHTML('beforeend', secfoot()+footer());
     wire(document); wireSub();
+    // "Cite this page" — copies a plain citation (title · site · URL · access date)
+    var cb=document.querySelector('.kfe-cite');
+    if(cb)cb.addEventListener('click',function(){
+      var t=(document.title||'').replace(/\s*[·—|\-]\s*Kronos Fusion Energy.*$/,'').trim()||'Kronos Fusion Energy';
+      var d=new Date(), c='Kronos Fusion Energy ('+d.getFullYear()+'). "'+t+'". '+location.href.split('#')[0]+' (accessed '+d.toISOString().slice(0,10)+').';
+      function done(){cb.textContent='Citation copied \u2713';setTimeout(function(){cb.textContent='Cite this page';},2200);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(c).then(done,function(){window.prompt('Copy this citation:',c);});}
+      else{window.prompt('Copy this citation:',c);}
+    });
+    document.body.classList.add('kfe-ready');   // releases the zero-CLS placeholder (see kfe-shell.css)
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject); else inject();
 })();
