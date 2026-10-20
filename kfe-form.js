@@ -1,4 +1,4 @@
-/* Kronos native forms — careers "Apply" and investor access request. Posts to the Kronos contact function. v1 (2026-10-19).
+/* Kronos native forms — careers "Apply" and investor access request. Posts to the Kronos contact function. v1.1 (2026-10-20).
    Include on any page after kfe-shell.js:  <script src="/kfe-form.js" defer></script>
    Careers: enhances the existing .apply block (Google Form link kept as fallback). Investors: renders into .kfe-form-mount[data-inquiry]. */
 (function(){
@@ -28,7 +28,7 @@
       .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
       .then(function(x){ if(!x.ok) throw new Error((x.j&&x.j.error)||'send failed');
         f.querySelectorAll('input,textarea,button').forEach(function(el){el.closest('label')?el.closest('label').remove():el.remove();}); var n=f.querySelector('.kfe-form-note'); if(n)n.remove();
-        st.setAttribute('data-state','ok'); st.innerHTML=o.thanks; })
+        st.setAttribute('data-state','ok'); st.innerHTML=o.thanks; try{document.dispatchEvent(new CustomEvent('kfe:form-sent',{detail:{inquiry:o.inquiry}}));}catch(e){} })
       .catch(function(){ b.disabled=false; st.setAttribute('data-state','err'); st.innerHTML='That didn’t go through. '+(o.fallback||'Please use the <a href="/contact">contact page</a>.'); });
     });
     return f;
